@@ -16,8 +16,7 @@ Trabalho da disciplina de Desenvolvimento de Aplicações Web
 
 - Mercado:
 
-- Descrição: tendo em vista que a pandemia fez com que as pessoas nao saisem mais de suas casas vemos que uma grande parcela dos estudandes tem certa dificuldade de se organizar, tanto em afazeres relacionados a educação quanto para os com a sua propia saude. 
-Logo o programa irá, organizar rotinas de forma a otimizar o tempo e a saude do usuario usando tabelas para fornecer lembretes e deixar os afazeres de forma mais rasuavel
+- Descrição: o sistema precisa armazenar o nome e e-mail do usuário que o utiliza. Cada usuário pode ter várias tabelas diferentes. Cada tabela possui 7 dias em que são armazenados diversos eventos, estes possuem informações tais como título, descrição, local, horário de início e horário de término. Os eventos podem ser classificados por tabela em diversas categorias em que é possível definir a cor em que eles serão mostrados. Cada categoria pode também ser nomeada.
 
 ### Diagrama de Classes
 ![Modelo Conceitual](Modelo_Conceitual.png)
