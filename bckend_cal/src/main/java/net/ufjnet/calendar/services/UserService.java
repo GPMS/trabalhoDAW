@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import net.ufjnet.calendar.models.User;
 import net.ufjnet.calendar.repositories.UserDAO;
+import net.ufjnet.calendar.services.exceptions.BusinessException;
 
 @AllArgsConstructor
 @Service
@@ -17,18 +18,31 @@ public class UserService {
 
 	private UserDAO dao;
 	
-	@Transactional
 	public List<User> FindAll() {
 		return dao.findAll();
 	}
 	
-	@Transactional
 	public Optional<User> FindByID(Integer id) {
 		return dao.findById(id);
 	}
 	
+	public Optional<User> FindByName(String name) {
+		return dao.findByName(name);
+	}
+	
+	public Optional<User> FindByEmail(String email) {
+		return dao.findByEmail(email);
+	}
+	
 	@Transactional
 	public User Save(User obj) {
+		boolean emailExists = dao.findByEmail(obj.getEmail())
+				.stream()
+				.anyMatch(objResult -> !objResult.equals(obj));
+		if (emailExists) {
+			throw new BusinessException("E-mail já existente!");
+		}
+		
 		return dao.save(obj);
 	}
 	

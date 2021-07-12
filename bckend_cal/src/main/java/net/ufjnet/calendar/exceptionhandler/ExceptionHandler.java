@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import net.ufjnet.calendar.services.exceptions.BusinessException;
+
 @ControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -34,6 +36,12 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		StandardError errors = new StandardError(status.value(), LocalDateTime.now(), "Verifique o preenchimento dos campos!", errorsFields);
 		return handleExceptionInternal(ex, errors, headers, status, request);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(BusinessException.class)
+	public ResponseEntity<StandardError> DataIntegrity(BusinessException ex) {
+		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), ex.getMessage(), null);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 	
 }

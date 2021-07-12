@@ -38,6 +38,20 @@ public class UserController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
+	@GetMapping("/name/{name}")
+	public ResponseEntity<User> FindName(@PathVariable String name) {
+		return service.FindByName(name)
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
+	}
+	
+	@GetMapping("/email/{email}")
+	public ResponseEntity<User> FindEmail(@PathVariable String email) {
+		return service.FindByEmail(email)
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
+	}
+	
 	@PostMapping
 	public ResponseEntity<User> Save(@Valid @RequestBody User obj) {
 		obj = service.Save(obj);
