@@ -28,12 +28,12 @@ public class User implements Serializable {
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_prop")
+	@Column(name = "id_user")
 	private Integer id;
 	
-	@Column(name = "name_prop", nullable = false)
+	@Column(name = "name_user", nullable = false)
 	private String name;
 	
-	@Column(name = "email_prop", nullable = false)
+	@Column(name = "email_user", nullable = false)
 	private String email;
 }
