@@ -1,10 +1,7 @@
 package net.ufjnet.calendar.services;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,7 +16,7 @@ import net.ufjnet.calendar.services.exceptions.BusinessException;
 @AllArgsConstructor
 @Service
 public class UserService {
-
+	
 	private UserDAO dao;
 	
 	@Transactional(readOnly = true)
@@ -28,25 +25,33 @@ public class UserService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Optional<UserDTO> FindByID(Integer id) {
-		return dao.findById(id).map(obj -> new UserDTO(obj));
+	public UserDTO FindByID(Integer id) {
+		User result = dao.findById(id).orElseThrow(() -> new BusinessException("Registros não encontrados!!!"));
+		
+		return new UserDTO(result);
+
 	}
 	
 	@Transactional(readOnly = true)
-	public Optional<UserDTO> FindByName(String name) {
-		return dao.findByName(name).map(obj -> new UserDTO(obj));
+	public UserDTO FindByName(String name) {
+		User result = dao.findByName(name).orElseThrow(() -> new BusinessException("Registros não encontrados!!!"));
+		
+		return new UserDTO(result);
+		
 	}
 	
 	@Transactional(readOnly = true)
-	public Optional<UserDTO> FindByEmail(String email) {
-		return dao.findByEmail(email).map(obj -> new UserDTO(obj));
+	public UserDTO FindByEmail(String email) {
+		User result = dao.findByEmail(email)
+				.orElseThrow(() -> new BusinessException("Registros não encontrados!!!"));
+		
+		return new UserDTO(result);
+		
 	}
 	
 	@Transactional
 	public UserDTO Save(User obj) {
-		boolean emailExists = dao.findByEmail(obj.getEmail())
-				.stream()
-				.anyMatch(objResult -> !objResult.equals(obj));
+		boolean emailExists = dao.findByEmail(obj.getEmail()).stream().anyMatch(objResult -> !objResult.equals(obj));
 		if (emailExists) {
 			throw new BusinessException("E-mail já existente!");
 		}
@@ -63,5 +68,5 @@ public class UserService {
 	public boolean ExistsByID(Integer id) {
 		return dao.existsById(id);
 	}
-	
+
 }
