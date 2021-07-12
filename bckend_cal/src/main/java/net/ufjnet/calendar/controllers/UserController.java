@@ -3,6 +3,8 @@ package net.ufjnet.calendar.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,13 +39,13 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<User> Save(@RequestBody User obj) {
+	public ResponseEntity<User> Save(@Valid @RequestBody User obj) {
 		obj = service.Save(obj);
 		return ResponseEntity.created(null).body(obj);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<User> Update(@PathVariable Integer id, @RequestBody User obj) {
+	public ResponseEntity<User> Update(@PathVariable Integer id, @Valid @RequestBody User obj) {
 		if (!service.ExistsByID(id)) {
 			return ResponseEntity.notFound().build();
 		}
