@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -22,32 +23,37 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "USERS")
-public class User implements Serializable {
+@Table(name = "CATEGORIES")
+public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_user")
+	@Column(name = "id_category")
 	private Integer id;
 	
-	@Column(name = "name_user", nullable = false)
+	@Column(name = "name_category", nullable = false)
 	private String name;
 
-	@Column(name = "email_user", nullable = false)
-	private String email;
+	@Column(name = "color_category", nullable = false)
+	private String color;
 	
-	@OneToMany(mappedBy = "user")
-	private List<Category> categories = new ArrayList<>();
+	@ManyToOne()
+	private User user;
 	
-	public User(Integer id, String name, String email) {
+	@OneToMany(mappedBy = "category")
+	private List<Event> events = new ArrayList<>();
+	
+	public Category(Integer id, String name, String color, User user) {
 		this.id = id;
 		this.name = name;
-		this.email = email;
+		this.color = color;
+		this.user = user;
 	}
 }

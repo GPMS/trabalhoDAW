@@ -27,21 +27,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import net.ufjnet.calendar.dtos.UserDTO;
-import net.ufjnet.calendar.models.User;
-import net.ufjnet.calendar.services.UserService;
+import net.ufjnet.calendar.dtos.CategoryDTO;
+import net.ufjnet.calendar.models.Category;
+import net.ufjnet.calendar.services.CategoryService;
 
 @RestController
-@RequestMapping("/v1/cal/users")
-@Tag(name = "User's Endpoint")
-public class UserController {
+@RequestMapping("/v1/cal/categories")
+@Tag(name = "Category's Endpoint")
+public class CategoryController {
 
 	@Autowired
-	private UserService service;
+	private CategoryService service;
 	
 	@GetMapping
-	@Operation(summary = "Finds all users")
-	public ResponseEntity<CollectionModel<UserDTO>> Findall(@RequestParam(value = "page", defaultValue = "0") int page,
+	@Operation(summary = "Finds all categories")
+	public ResponseEntity<CollectionModel<CategoryDTO>> Findall(@RequestParam(value = "page", defaultValue = "0") int page,
 															@RequestParam(value = "limit", defaultValue = "12") int limit,
 															@RequestParam(value = "direction", defaultValue = "asc") String direction) {
 
@@ -49,11 +49,11 @@ public class UserController {
 
 		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "name"));
 
-		Page<UserDTO> pages = service.FindAll(pageable);
+		Page<CategoryDTO> pages = service.FindAll(pageable);
 		pages
 			.stream()
 			.forEach(p -> p.add(
-						linkTo(methodOn(UserController.class).FindOne(p.getId())).withSelfRel()
+						linkTo(methodOn(CategoryController.class).FindOne(p.getId())).withSelfRel()
 					)
 			);
 
@@ -61,52 +61,43 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	@Operation(summary = "Finds one user given his id")
-	public ResponseEntity<UserDTO> FindOne(@PathVariable Integer id) {
-		UserDTO objDTO = service.FindByID(id);
-		objDTO.add(linkTo(methodOn(UserController.class).FindOne(id)).withSelfRel());
+	@Operation(summary = "Finds one category given its id")
+	public ResponseEntity<CategoryDTO> FindOne(@PathVariable Integer id) {
+		CategoryDTO objDTO = service.FindByID(id);
+		objDTO.add(linkTo(methodOn(CategoryController.class).FindOne(id)).withSelfRel());
 		return ResponseEntity.ok(objDTO);
 	}
 
 	@GetMapping("/name/{name}")
-	@Operation(summary = "Finds one user given his name")
-	public ResponseEntity<UserDTO> FindName(@PathVariable String name) {
-		UserDTO objDTO = service.FindByName(name);
-		objDTO.add(linkTo(methodOn(UserController.class).FindName(name)).withSelfRel());
-		return ResponseEntity.ok(objDTO);
-	}
-
-	@GetMapping("/email/{email}")
-	@Operation(summary = "Finds one user given his e-mail")
-	public ResponseEntity<UserDTO> FindEmail(@PathVariable String email) {
-		UserDTO objDTO = service.FindByEmail(email);
-		objDTO.add(linkTo(methodOn(UserController.class).FindEmail(email)).withSelfRel());
+	@Operation(summary = "Finds one category given its name")
+	public ResponseEntity<CategoryDTO> FindName(@PathVariable String name) {
+		CategoryDTO objDTO = service.FindByName(name);
+		objDTO.add(linkTo(methodOn(CategoryController.class).FindName(name)).withSelfRel());
 		return ResponseEntity.ok(objDTO);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	@Operation(summary = "Inserts a new user in the Database")
-	public ResponseEntity<UserDTO> Save(@Valid @RequestBody UserDTO objBody) {
-		UserDTO objDTO = service.Save(objBody);
-		objDTO.add(linkTo(methodOn(UserController.class).FindOne(objDTO.getId())).withSelfRel());
+	@Operation(summary = "Inserts a new category in the Database")
+	public ResponseEntity<CategoryDTO> Save(@Valid @RequestBody CategoryDTO objBody) {
+		CategoryDTO objDTO = service.Save(objBody);
+		objDTO.add(linkTo(methodOn(CategoryController.class).FindOne(objDTO.getId())).withSelfRel());
 		return ResponseEntity.ok(objDTO);
 	}
 
 	@PutMapping("/{id}")
-	@Operation(summary = "Updates one user given his id")
-	public ResponseEntity<UserDTO> Update(@PathVariable Integer id, @Valid @RequestBody UserDTO objBody) {
+	@Operation(summary = "Updates one category given its id")
+	public ResponseEntity<CategoryDTO> Update(@PathVariable Integer id, @Valid @RequestBody CategoryDTO objBody) {
 		if (!service.ExistsByID(id)) {
 			return ResponseEntity.notFound().build();
 		}
-		objBody.setId(id);
-		UserDTO objDTO = service.Save(objBody);
-		objDTO.add(linkTo(methodOn(UserController.class).FindOne(objDTO.getId())).withSelfRel());
+		CategoryDTO objDTO = service.Update(objBody);
+		objDTO.add(linkTo(methodOn(CategoryController.class).FindOne(objDTO.getId())).withSelfRel());
 		return ResponseEntity.ok(objDTO);
 	}
-
+ 
 	@DeleteMapping("/{id}")
-	@Operation(summary = "Deletes one user given his id")
+	@Operation(summary = "Deletes one category given its id")
 	public ResponseEntity<Void> Delete(@PathVariable Integer id) {
 		if (!service.ExistsByID(id)) {
 			return ResponseEntity.notFound().build();

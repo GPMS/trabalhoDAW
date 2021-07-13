@@ -27,33 +27,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import net.ufjnet.calendar.dtos.UserDTO;
-import net.ufjnet.calendar.models.User;
-import net.ufjnet.calendar.services.UserService;
+import net.ufjnet.calendar.dtos.EventDTO;
+import net.ufjnet.calendar.models.Event;
+import net.ufjnet.calendar.services.EventService;
 
 @RestController
-@RequestMapping("/v1/cal/users")
-@Tag(name = "User's Endpoint")
-public class UserController {
+@RequestMapping("/v1/cal/events")
+@Tag(name = "Event's Endpoint")
+public class EventController {
 
 	@Autowired
-	private UserService service;
+	private EventService service;
 	
 	@GetMapping
-	@Operation(summary = "Finds all users")
-	public ResponseEntity<CollectionModel<UserDTO>> Findall(@RequestParam(value = "page", defaultValue = "0") int page,
+	@Operation(summary = "Finds all events")
+	public ResponseEntity<CollectionModel<EventDTO>> Findall(@RequestParam(value = "page", defaultValue = "0") int page,
 															@RequestParam(value = "limit", defaultValue = "12") int limit,
 															@RequestParam(value = "direction", defaultValue = "asc") String direction) {
 
 		Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
 
-		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "name"));
+		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "title"));
 
-		Page<UserDTO> pages = service.FindAll(pageable);
+		Page<EventDTO> pages = service.FindAll(pageable);
 		pages
 			.stream()
 			.forEach(p -> p.add(
-						linkTo(methodOn(UserController.class).FindOne(p.getId())).withSelfRel()
+						linkTo(methodOn(EventController.class).FindOne(p.getId())).withSelfRel()
 					)
 			);
 
@@ -61,52 +61,43 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	@Operation(summary = "Finds one user given his id")
-	public ResponseEntity<UserDTO> FindOne(@PathVariable Integer id) {
-		UserDTO objDTO = service.FindByID(id);
-		objDTO.add(linkTo(methodOn(UserController.class).FindOne(id)).withSelfRel());
+	@Operation(summary = "Finds one event given its id")
+	public ResponseEntity<EventDTO> FindOne(@PathVariable Integer id) {
+		EventDTO objDTO = service.FindByID(id);
+		objDTO.add(linkTo(methodOn(EventController.class).FindOne(id)).withSelfRel());
 		return ResponseEntity.ok(objDTO);
 	}
 
-	@GetMapping("/name/{name}")
-	@Operation(summary = "Finds one user given his name")
-	public ResponseEntity<UserDTO> FindName(@PathVariable String name) {
-		UserDTO objDTO = service.FindByName(name);
-		objDTO.add(linkTo(methodOn(UserController.class).FindName(name)).withSelfRel());
-		return ResponseEntity.ok(objDTO);
-	}
-
-	@GetMapping("/email/{email}")
-	@Operation(summary = "Finds one user given his e-mail")
-	public ResponseEntity<UserDTO> FindEmail(@PathVariable String email) {
-		UserDTO objDTO = service.FindByEmail(email);
-		objDTO.add(linkTo(methodOn(UserController.class).FindEmail(email)).withSelfRel());
+	@GetMapping("/title/{title}")
+	@Operation(summary = "Finds one event given its title")
+	public ResponseEntity<EventDTO> FindName(@PathVariable String title) {
+		EventDTO objDTO = service.FindByName(title);
+		objDTO.add(linkTo(methodOn(EventController.class).FindName(title)).withSelfRel());
 		return ResponseEntity.ok(objDTO);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	@Operation(summary = "Inserts a new user in the Database")
-	public ResponseEntity<UserDTO> Save(@Valid @RequestBody UserDTO objBody) {
-		UserDTO objDTO = service.Save(objBody);
-		objDTO.add(linkTo(methodOn(UserController.class).FindOne(objDTO.getId())).withSelfRel());
+	@Operation(summary = "Inserts a new event in the Database")
+	public ResponseEntity<EventDTO> Save(@Valid @RequestBody EventDTO objBody) {
+		EventDTO objDTO = service.Save(objBody);
+		objDTO.add(linkTo(methodOn(EventController.class).FindOne(objDTO.getId())).withSelfRel());
 		return ResponseEntity.ok(objDTO);
 	}
 
 	@PutMapping("/{id}")
-	@Operation(summary = "Updates one user given his id")
-	public ResponseEntity<UserDTO> Update(@PathVariable Integer id, @Valid @RequestBody UserDTO objBody) {
+	@Operation(summary = "Updates one event given its id")
+	public ResponseEntity<EventDTO> Update(@PathVariable Integer id, @Valid @RequestBody EventDTO objBody) {
 		if (!service.ExistsByID(id)) {
 			return ResponseEntity.notFound().build();
 		}
-		objBody.setId(id);
-		UserDTO objDTO = service.Save(objBody);
-		objDTO.add(linkTo(methodOn(UserController.class).FindOne(objDTO.getId())).withSelfRel());
+		EventDTO objDTO = service.Update(objBody);
+		objDTO.add(linkTo(methodOn(EventController.class).FindOne(objDTO.getId())).withSelfRel());
 		return ResponseEntity.ok(objDTO);
 	}
-
+ 
 	@DeleteMapping("/{id}")
-	@Operation(summary = "Deletes one user given his id")
+	@Operation(summary = "Deletes one event given its id")
 	public ResponseEntity<Void> Delete(@PathVariable Integer id) {
 		if (!service.ExistsByID(id)) {
 			return ResponseEntity.notFound().build();
