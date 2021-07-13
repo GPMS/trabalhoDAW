@@ -50,13 +50,34 @@ public class UserService {
 	}
 	
 	@Transactional
-	public UserDTO Save(User obj) {
+	public UserDTO Save(UserDTO obj) {
+		User entity = new User(obj.getId(), obj.getName(), obj.getEmail());
+		
 		boolean emailExists = dao.findByEmail(obj.getEmail()).stream().anyMatch(objResult -> !objResult.equals(obj));
 		if (emailExists) {
 			throw new BusinessException("E-mail já existente!");
 		}
 		
-		return new UserDTO(dao.save(obj));
+		return new UserDTO(dao.save(entity));
+	}
+	
+	@Transactional
+	public UserDTO Update(UserDTO obj) {
+		User entity = dao.findById(obj.getId())
+				.orElseThrow(() -> new BusinessException("User not found!"));
+		
+		boolean emailExists = dao.findByEmail(obj.getEmail())
+				.stream()
+				.anyMatch(objResult -> !objResult.equals(obj));
+		if (emailExists) {
+			throw new BusinessException("E-mail já existente!");
+		}
+		
+		entity.setId(obj.getId());
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		
+		return new UserDTO(dao.save(entity));
 	}
 	
 	@Transactional

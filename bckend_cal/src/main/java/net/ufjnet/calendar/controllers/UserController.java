@@ -85,7 +85,7 @@ public class UserController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@Operation(summary = "Inserts a new user in the Database")
-	public ResponseEntity<UserDTO> Save(@RequestBody User objBody) {
+	public ResponseEntity<UserDTO> Save(@RequestBody UserDTO objBody) {
 		UserDTO objDTO = service.Save(objBody);
 		objDTO.add(linkTo(methodOn(UserController.class).FindOne(objDTO.getId())).withSelfRel());
 		return ResponseEntity.ok(objDTO);
@@ -93,7 +93,7 @@ public class UserController {
 
 	@PutMapping("/{id}")
 	@Operation(summary = "Updates one user given his id")
-	public ResponseEntity<UserDTO> Update(@PathVariable Integer id, @RequestBody User objBody) {
+	public ResponseEntity<UserDTO> Update(@PathVariable Integer id, @RequestBody UserDTO objBody) {
 		if (!service.ExistsByID(id)) {
 			return ResponseEntity.notFound().build();
 		}
@@ -101,7 +101,7 @@ public class UserController {
 		UserDTO objDTO = service.Save(objBody);
 		objDTO.add(linkTo(methodOn(UserController.class).FindOne(objDTO.getId())).withSelfRel());
 		return ResponseEntity.ok(objDTO);
-	}		
+	}
 
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Deletes one user given his id")
