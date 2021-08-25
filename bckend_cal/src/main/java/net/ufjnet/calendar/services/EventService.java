@@ -1,5 +1,7 @@
 package net.ufjnet.calendar.services;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -48,7 +50,9 @@ public class EventService {
 	
 	@Transactional
 	public EventDTO Save(EventDTO obj) {
-		Event entity = new Event(obj.getId(), obj.getTitle(), obj.getDescription(), obj.getTimeBegin(), obj.getTimeEnd(),
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+		Event entity = new Event(obj.getId(), obj.getTitle(), obj.getDescription(), 
+								 LocalDateTime.parse(obj.getTimeBegin(), formatter), LocalDateTime.parse(obj.getTimeEnd(), formatter),
 								 new User(obj.getUser().getId(), obj.getUser().getName(), obj.getUser().getEmail()));
 		
 		Optional<User> user = userDAO.findById(obj.getUser().getId());
@@ -85,8 +89,10 @@ public class EventService {
 		
 		entity.setId(obj.getId());
 		entity.setTitle(obj.getTitle());
-		entity.setTimeBegin(obj.getTimeBegin());
-		entity.setTimeEnd(obj.getTimeEnd());
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+		entity.setTimeBegin(LocalDateTime.parse(obj.getTimeBegin(), formatter));
+		entity.setTimeEnd(LocalDateTime.parse(obj.getTimeBegin(), formatter));
 		
 		return new EventDTO(dao.save(entity));
 	}

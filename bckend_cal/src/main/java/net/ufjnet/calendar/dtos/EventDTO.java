@@ -1,11 +1,12 @@
 package net.ufjnet.calendar.dtos;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
@@ -44,14 +45,16 @@ public class EventDTO extends RepresentationModel<EventDTO> implements Serializa
 	@JsonProperty("description_event")
 	private String description;
 	
-	// "13.07.2021 11:07"
+	// "13-07-2021 11:07"
 	@NotNull
+	@Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-((19|2[0-9])[0-9]{2}) ([01][0-9]|2[0-3]):([0-5][0-9])$")
 	@JsonProperty("timeBegin_event")
-	private LocalDateTime timeBegin;
+	private String timeBegin;
 	
 	@NotNull
+	@Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-((19|2[0-9])[0-9]{2}) ([01][0-9]|2[0-3]):([0-5][0-9])$")
 	@JsonProperty("timeEnd_event")
-	private LocalDateTime timeEnd;
+	private String timeEnd;
 	
 	@ConvertGroup(from = Default.class, to = ValidationGroups.UserID.class)
 	@NotNull
@@ -66,8 +69,11 @@ public class EventDTO extends RepresentationModel<EventDTO> implements Serializa
 		this.id = obj.getId();
 		this.title = obj.getTitle();
 		this.description = obj.getDescription();
-		this.timeBegin = obj.getTimeBegin();
-		this.timeEnd = obj.getTimeEnd();
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+		this.timeBegin = obj.getTimeBegin().format(formatter);
+		this.timeEnd = obj.getTimeEnd().format(formatter);
+		
 		this.user = new UserDTO(obj.getUser());
 		
 		if (obj.getCategory() != null) {
