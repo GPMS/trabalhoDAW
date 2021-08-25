@@ -1,5 +1,7 @@
 package net.ufjnet.calendar;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +48,8 @@ public class BckendCalApplication implements CommandLineRunner {
 		Category c3 = new Category(3, "Freetime", "#0000ff", u2);
 		categoryDAO.saveAll(Arrays.asList(c1, c2, c3));
 		
-		Event e1 = new Event(1, "Test", "01.12.2020 00:00", "01.12.2020 23:59", u1, c1);
-		Event e2 = new Event(2, "Test2", "01.12.2020 01:00", "01.12.2020 23:59", u1);
+		Event e1 = new Event(1, "Test", LocalDateTime.of(2020, Month.DECEMBER, 1,0, 0), LocalDateTime.of(2020, Month.DECEMBER, 1, 23, 59), u1, c1);
+		Event e2 = new Event(2, "Test2", LocalDateTime.of(2020, Month.DECEMBER, 1,1, 0), LocalDateTime.of(2020, Month.DECEMBER, 1, 23, 59), u1);
 		eventDAO.saveAll(Arrays.asList(e1, e2));
 	}
 }

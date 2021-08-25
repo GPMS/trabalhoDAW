@@ -46,10 +46,10 @@ public class Event implements Serializable {
 	private String description;
 	
 	@Column(name = "timeBegin_event", nullable = false)
-	private String timeBegin;
+	private LocalDateTime timeBegin;
 	
 	@Column(name = "timeEnd_event", nullable = false)
-	private String timeEnd;
+	private LocalDateTime timeEnd;
 	
 	@ManyToOne()
 	private User user;
@@ -57,7 +57,7 @@ public class Event implements Serializable {
 	@ManyToOne()
 	private Category category;
 	
-	public Event(Integer id, String title, String timeBegin, String timeEnd, User user) {
+	public Event(Integer id, String title, LocalDateTime timeBegin, LocalDateTime timeEnd, User user) {
 		this.id = id;
 		this.title = title;
 		this.description = "";
@@ -67,7 +67,7 @@ public class Event implements Serializable {
 		this.category = null;
 	}
 	
-	public Event(Integer id, String title, String description, String timeBegin, String timeEnd, User user) {
+	public Event(Integer id, String title, String description, LocalDateTime timeBegin, LocalDateTime timeEnd, User user) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -77,7 +77,7 @@ public class Event implements Serializable {
 		this.category = null;
 	}
 	
-	public Event(Integer id, String title, String timeBegin, String timeEnd, User user, Category category) {
+	public Event(Integer id, String title, LocalDateTime timeBegin, LocalDateTime timeEnd, User user, Category category) {
 		this.id = id;
 		this.title = title;
 		this.description = "";

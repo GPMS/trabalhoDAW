@@ -1,6 +1,7 @@
 package net.ufjnet.calendar.dtos;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
@@ -50,15 +51,13 @@ public class EventDTO extends RepresentationModel<EventDTO> implements Serializa
 	private String description;
 	
 	// "13.07.2021 11:07"
-	@NotBlank
-	@Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[012]).((19|2[0-9])[0-9]{2}) ([01][0-9]|2[0-3]):([0-5][0-9])$")
+	@NotNull
 	@JsonProperty("timeBegin_event")
-	private String timeBegin;
+	private LocalDateTime timeBegin;
 	
-	@NotBlank
-	@Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[012]).((19|2[0-9])[0-9]{2}) ([01][0-9]|2[0-3]):([0-5][0-9])$")
+	@NotNull
 	@JsonProperty("timeEnd_event")
-	private String timeEnd;
+	private LocalDateTime timeEnd;
 	
 	@ConvertGroup(from = Default.class, to = ValidationGroups.UserID.class)
 	@NotNull
