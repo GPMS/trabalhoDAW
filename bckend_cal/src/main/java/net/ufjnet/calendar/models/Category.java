@@ -6,9 +6,11 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -32,16 +34,17 @@ public class Category implements Serializable {
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_category")
+	@Column(name = "category_id")
 	private Integer id;
 	
-	@Column(name = "name_category", nullable = false)
+	@Column(name = "category_name", nullable = false)
 	private String name;
 
-	@Column(name = "color_category", nullable = false)
+	@Column(name = "category_color", nullable = false)
 	private String color;
 	
 	@ManyToOne()
+	@JoinColumn(name = "category_user_id", nullable = false, foreignKey = @ForeignKey(name="FK_USER__ROUTE"))
 	private User user;
 	
 	@OneToMany(mappedBy = "category")

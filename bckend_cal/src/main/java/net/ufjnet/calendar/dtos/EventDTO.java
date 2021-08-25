@@ -28,32 +28,32 @@ import net.ufjnet.calendar.models.Event;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-@JsonPropertyOrder({"id_event", "title_event", "description_event", "timeBegin_event", "timeEnd_event"})
+@JsonPropertyOrder({"event_id", "event_title", "event_description", "event_timeBegin", "event_timeEnd"})
 public class EventDTO extends RepresentationModel<EventDTO> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EqualsAndHashCode.Include
-	@JsonProperty("id_event")
+	@JsonProperty("event_id")
 	private Integer id;
 	
 	@NotBlank
 	@Size(max=255)
-	@JsonProperty("title_event")
+	@JsonProperty("event_title")
 	private String title;
 	
 	@Size(max=255)
-	@JsonProperty("description_event")
+	@JsonProperty("event_description")
 	private String description;
 	
 	// "13-07-2021 11:07"
 	@NotNull
 	@Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-((19|2[0-9])[0-9]{2}) ([01][0-9]|2[0-3]):([0-5][0-9])$")
-	@JsonProperty("timeBegin_event")
+	@JsonProperty("event_timeBegin")
 	private String timeBegin;
 	
 	@NotNull
 	@Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-((19|2[0-9])[0-9]{2}) ([01][0-9]|2[0-3]):([0-5][0-9])$")
-	@JsonProperty("timeEnd_event")
+	@JsonProperty("event_timeEnd")
 	private String timeEnd;
 	
 	@ConvertGroup(from = Default.class, to = ValidationGroups.UserID.class)

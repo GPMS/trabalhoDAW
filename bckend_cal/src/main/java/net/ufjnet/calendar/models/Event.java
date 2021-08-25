@@ -5,9 +5,11 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -30,25 +32,27 @@ public class Event implements Serializable {
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_event")
+	@Column(name = "event_id")
 	private Integer id;
 	
-	@Column(name = "title_event", nullable = false)
+	@Column(name = "event_title", nullable = false)
 	private String title;
 
-	@Column(name = "description_event")
+	@Column(name = "event_description")
 	private String description;
 	
-	@Column(name = "timeBegin_event", nullable = false)
+	@Column(name = "event_timeBegin", nullable = false)
 	private LocalDateTime timeBegin;
 	
-	@Column(name = "timeEnd_event", nullable = false)
+	@Column(name = "event_timeEnd", nullable = false)
 	private LocalDateTime timeEnd;
-	
+
 	@ManyToOne()
+	@JoinColumn(name = "event_user_id", nullable = false, foreignKey = @ForeignKey(name="FK_USER__ROUTE"))
 	private User user;
 	
 	@ManyToOne()
+	@JoinColumn(name = "event_category_id", foreignKey = @ForeignKey(name="FK_CATEGORY__ROUTE"))
 	private Category category;
 	
 	public Event(Integer id, String title, LocalDateTime timeBegin, LocalDateTime timeEnd, User user) {

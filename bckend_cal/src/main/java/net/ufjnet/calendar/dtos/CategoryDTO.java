@@ -26,22 +26,22 @@ import net.ufjnet.calendar.models.Category;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-@JsonPropertyOrder({"id_category", "name_category", "color_category"})
+@JsonPropertyOrder({"category_id", "category_name", "category_color"})
 public class CategoryDTO extends RepresentationModel<CategoryDTO> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EqualsAndHashCode.Include
-	@JsonProperty("id_category")
+	@JsonProperty("category_id")
 	private Integer id;
 	
 	@NotBlank
 	@Size(max=255)
-	@JsonProperty("name_category")
+	@JsonProperty("category_name")
 	private String name;
 	
 	@NotBlank
 	@Size(max=7)
-	@JsonProperty("color_category")
+	@JsonProperty("category_color")
 	private String color;
 	
 	@ConvertGroup(from = Default.class, to = ValidationGroups.UserID.class)
