@@ -3,12 +3,9 @@ package net.ufjnet.calendar.dtos;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
@@ -23,10 +20,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.ufjnet.calendar.dtos.ValidationGroups.UserID;
-import net.ufjnet.calendar.models.Category;
 import net.ufjnet.calendar.models.Event;
-import net.ufjnet.calendar.models.User;
 
 @NoArgsConstructor
 @AllArgsConstructor

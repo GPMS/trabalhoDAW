@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import net.ufjnet.calendar.dtos.EventDTO;
-import net.ufjnet.calendar.dtos.UserDTO;
 import net.ufjnet.calendar.models.Category;
 import net.ufjnet.calendar.models.Event;
 import net.ufjnet.calendar.models.User;

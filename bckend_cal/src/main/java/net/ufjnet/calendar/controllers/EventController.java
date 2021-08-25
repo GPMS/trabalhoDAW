@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import net.ufjnet.calendar.dtos.EventDTO;
-import net.ufjnet.calendar.models.Event;
 import net.ufjnet.calendar.services.EventService;
 
 @RestController

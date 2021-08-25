@@ -19,9 +19,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.ufjnet.calendar.dtos.ValidationGroups.UserID;
 import net.ufjnet.calendar.models.Category;
-import net.ufjnet.calendar.models.User;
 
 @NoArgsConstructor
 @AllArgsConstructor
