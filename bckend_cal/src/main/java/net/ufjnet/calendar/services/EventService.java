@@ -48,6 +48,11 @@ public class EventService {
 		
 	}
 	
+	@Transactional(readOnly = true)
+	public Page<EventDTO> FindByUserID(Integer id, Pageable pageable) {
+		return dao.findByUserID(id, pageable).map(obj -> new EventDTO(obj));
+	}
+	
 	@Transactional
 	public EventDTO Save(EventDTO obj) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
