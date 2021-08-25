@@ -27,8 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import net.ufjnet.calendar.dtos.CategoryDTO;
 import net.ufjnet.calendar.dtos.EventDTO;
 import net.ufjnet.calendar.dtos.UserDTO;
+import net.ufjnet.calendar.services.CategoryService;
 import net.ufjnet.calendar.services.EventService;
 import net.ufjnet.calendar.services.UserService;
 
@@ -42,6 +44,9 @@ public class UserController {
 	
 	@Autowired 
 	private EventService eventService;
+	
+	@Autowired 
+	private CategoryService categoryService;
 	
 	@GetMapping
 	@Operation(summary = "Finds all users")
@@ -65,7 +70,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}/events")
-	@Operation(summary = "Finds all events of given users")
+	@Operation(summary = "Finds all events of given user")
 	public ResponseEntity<CollectionModel<EventDTO>> FindAllEvents(@RequestParam(value = "page", defaultValue = "0") int page,
 																   @RequestParam(value = "limit", defaultValue = "12") int limit,
 																   @RequestParam(value = "direction", defaultValue = "asc") String direction,
@@ -79,6 +84,27 @@ public class UserController {
 			.stream()
 			.forEach(p -> p.add(
 						linkTo(methodOn(EventController.class).FindOne(p.getId())).withSelfRel()
+					)
+			);
+
+		return ResponseEntity.ok(CollectionModel.of(pages));
+	}
+	
+	@GetMapping("/{id}/categories")
+	@Operation(summary = "Finds all categories of given user")
+	public ResponseEntity<CollectionModel<CategoryDTO>> FindAllCategories(@RequestParam(value = "page", defaultValue = "0") int page,
+																		  @RequestParam(value = "limit", defaultValue = "12") int limit,
+																		  @RequestParam(value = "direction", defaultValue = "asc") String direction,
+																		  @PathVariable Integer id) {
+		Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+
+		Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "name"));
+
+		Page<CategoryDTO> pages = categoryService.FindByUserID(id, pageable);
+		pages
+			.stream()
+			.forEach(p -> p.add(
+						linkTo(methodOn(CategoryController.class).FindOne(p.getId())).withSelfRel()
 					)
 			);
 

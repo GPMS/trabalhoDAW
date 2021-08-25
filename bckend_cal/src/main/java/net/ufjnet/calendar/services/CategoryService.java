@@ -43,6 +43,11 @@ public class CategoryService {
 		
 	}
 	
+	@Transactional(readOnly = true)
+	public Page<CategoryDTO> FindByUserID(Integer id, Pageable pageable) {
+		return dao.findByUserID(id, pageable).map(obj -> new CategoryDTO(obj));
+	}
+	
 	@Transactional
 	public CategoryDTO Save(CategoryDTO obj) {
 		Category entity = new Category(obj.getId(), obj.getName(), obj.getColor(), 
