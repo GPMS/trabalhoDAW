@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -73,7 +72,7 @@ public class User implements UserDetails, Serializable {
 	@JoinTable(name = "user_permission", 
 			   joinColumns = @JoinColumn(name = "user_id"), 
 			   inverseJoinColumns = @JoinColumn(name = "permission_id"))
-	private List<Permission> permissions = new ArrayList();
+	private List<Permission> permissions = new ArrayList<>();
 	
 	public List<String> getRoles() {
 		List<String> roles = new ArrayList<>();

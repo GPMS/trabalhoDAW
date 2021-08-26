@@ -3,7 +3,6 @@ package net.ufjnet.calendar.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,6 +43,6 @@ public class Permission implements GrantedAuthority, Serializable {
 	
 	@JsonIgnore
 	@ManyToMany(mappedBy = "permissions")
-	private List<User> users = new ArrayList();
+	private List<User> users = new ArrayList<>();
 
 }
