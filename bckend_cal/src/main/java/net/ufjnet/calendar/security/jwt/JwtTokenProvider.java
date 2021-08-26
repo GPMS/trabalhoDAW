@@ -35,12 +35,10 @@ public class JwtTokenProvider {
 	
 	@PostConstruct
 	protected void init() {
-		System.out.println("JwtTokenProvider::init");
 		secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
 	}
 	
 	public String createToken(String userName, List<String> roles) {
-		System.out.println("JwtTokenProvider::createToken");
 		Claims claims = Jwts.claims().setSubject(userName);
 		claims.put("roles", roles);
 		
@@ -64,25 +62,20 @@ public class JwtTokenProvider {
 	}
 	
 	public Authentication getAuthentication(String token) {
-		System.out.println("JwtTokenProvider::getAuthentication");
 		UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUserName(token));
 		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 	}
 	
 	public String resolveToken(HttpServletRequest req) {
-		System.out.println("JwtTokenProvider::resolveToken");
 		String bearerToken = req.getHeader("Authorization");
 		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
 			String token = bearerToken.substring(7, bearerToken.length());
-			System.out.println("JwtTokenProvider::resolveToken token: " + token);
 			return token;
 		}
-		System.out.println("JwtTokenProvider::resolveToken no token");
 		return null;
 	}
 	
 	public boolean validateToken(String token) {
-		System.out.println("JwtTokenProvider::validateToken");
 		try {
 			Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 			if (claims.getBody().getExpiration().before(new Date())) {

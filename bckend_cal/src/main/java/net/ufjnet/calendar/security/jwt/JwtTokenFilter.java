@@ -19,14 +19,12 @@ public class JwtTokenFilter extends GenericFilterBean {
 	private JwtTokenProvider tokenProvider;
 	
 	public JwtTokenFilter(JwtTokenProvider tokenProvider) {
-		System.out.println("JwtTokenFilter::JwtTokenFilter");
 		this.tokenProvider = tokenProvider;
 	}
 	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		System.out.println("JwtTokenFilter::doFilter");
 		String token = tokenProvider.resolveToken((HttpServletRequest)request);
 		if (token != null && tokenProvider.validateToken(token)) {
 			Authentication auth = tokenProvider.getAuthentication(token);

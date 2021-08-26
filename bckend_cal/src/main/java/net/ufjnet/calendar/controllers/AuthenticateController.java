@@ -41,7 +41,6 @@ public class AuthenticateController {
 	@Operation(summary = "Authenticates a user and returns a token")
 	@PostMapping(value = "/signin")
 	public ResponseEntity<?> SignIn(@RequestBody UserDTO objDTO) {
-		System.out.println("SignIn");
 		try {
 			
 			String username = objDTO.getUsername();
@@ -66,7 +65,6 @@ public class AuthenticateController {
 			model.put("token", token);
 			return ok(model);
 		} catch (AuthenticationException e) {
-			System.out.println("SignIn - Exception");
 			throw new BadCredentialsException(e.getMessage());
 		}
 	}
