@@ -15,9 +15,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -114,6 +111,24 @@ public class UserController {
 			);
 
 		return ResponseEntity.ok(CollectionModel.of(pages));
+	}
+	
+	@PostMapping("/category")
+	@Operation(summary = "Add a new category to the current logged user")
+	public ResponseEntity<CategoryDTO> FindAllCategories(@Valid @RequestBody CategoryDTO category) {
+		UserDTO currentUser = service.FindByEmail(request.getUserPrincipal().getName());
+		category.setUser(currentUser);
+		categoryService.Save(category);
+		return ResponseEntity.ok(category);
+	}
+	
+	@PostMapping("/event")
+	@Operation(summary = "Add a new event to the current logged user")
+	public ResponseEntity<EventDTO> FindAllCategories(@Valid @RequestBody EventDTO event) {
+		UserDTO currentUser = service.FindByEmail(request.getUserPrincipal().getName());
+		event.setUser(currentUser);
+		eventService.Save(event);
+		return ResponseEntity.ok(event);
 	}
 
 	@GetMapping("/{id}")

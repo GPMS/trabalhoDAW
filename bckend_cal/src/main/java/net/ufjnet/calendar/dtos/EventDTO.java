@@ -58,7 +58,6 @@ public class EventDTO extends RepresentationModel<EventDTO> implements Serializa
 	private String timeEnd;
 	
 	@ConvertGroup(from = Default.class, to = ValidationGroups.UserID.class)
-	@NotNull
 	@Valid
 	private UserDTO user;
 	

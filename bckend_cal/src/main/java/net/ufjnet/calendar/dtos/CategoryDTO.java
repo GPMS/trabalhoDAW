@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
@@ -46,7 +45,6 @@ public class CategoryDTO extends RepresentationModel<CategoryDTO> implements Ser
 	private String color;
 	
 	@ConvertGroup(from = Default.class, to = ValidationGroups.UserID.class)
-	@NotNull
 	@Valid
 	private UserDTO user;
 	
