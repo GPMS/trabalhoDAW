@@ -23,6 +23,7 @@ import net.ufjnet.calendar.models.User;
 import net.ufjnet.calendar.repositories.UserDAO;
 import net.ufjnet.calendar.security.UserDTO;
 import net.ufjnet.calendar.security.jwt.JwtTokenProvider;
+import net.ufjnet.calendar.services.UserService;
 
 @Tag(name = "Authentication Endpoint") 
 @RestController
@@ -38,6 +39,9 @@ public class AuthenticateController {
 	@Autowired
 	UserDAO dao;
 	
+	@Autowired
+	UserService service;
+	
 	@Operation(summary = "Authenticates a user and returns a token")
 	@PostMapping(value = "/signin")
 	public ResponseEntity<?> SignIn(@RequestBody UserDTO objDTO) {
@@ -49,7 +53,6 @@ public class AuthenticateController {
 			User obj = dao.findByUsername(username);
 			
 			String token = "";
-			
 			if (obj.getUsername() != null) {
 				token = tokenProvider.createToken(obj.getUsername(), obj.getRoles());
 			} else {
@@ -67,5 +70,11 @@ public class AuthenticateController {
 		} catch (AuthenticationException e) {
 			throw new BadCredentialsException(e.getMessage());
 		}
+	}
+	
+	@Operation(summary = "Creates a new user")
+	@PostMapping(value = "/signup")
+	public UserDTO SignUp(@RequestBody UserDTO objDTO) {
+		return service.Save(objDTO);
 	}
 }
