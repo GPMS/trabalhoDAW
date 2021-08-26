@@ -68,14 +68,6 @@ public class EventService {
 			entity.setCategory(category.orElse(null));
 		}
 		
-		boolean titleExists = dao.findByTitle(obj.getTitle())
-				.stream()
-				.anyMatch(objResult -> !objResult.equals(obj));
-		
-		if (titleExists) {
-			throw new BusinessException("Título já existente!");
-		}
-		
 		return new EventDTO(dao.save(entity));
 	}
 	
@@ -84,13 +76,6 @@ public class EventService {
 	public EventDTO Update(EventDTO obj) {
 		Event entity = dao.findById(obj.getId())
 				.orElseThrow(() -> new BusinessException("User not found!"));
-		
-		boolean titleExists = dao.findByTitle(obj.getTitle())
-				.stream()
-				.anyMatch(objResult -> !objResult.equals(obj));
-		if (titleExists) {
-			throw new BusinessException("Nome já existente!");
-		}
 		
 		entity.setId(obj.getId());
 		entity.setTitle(obj.getTitle());
