@@ -2,18 +2,21 @@ package net.ufjnet.calendar.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
-import net.ufjnet.calendar.dtos.UserDTO;
 import net.ufjnet.calendar.models.User;
 import net.ufjnet.calendar.repositories.UserDAO;
+import net.ufjnet.calendar.security.UserDTO;
 import net.ufjnet.calendar.services.exceptions.BusinessException;
 
 @AllArgsConstructor
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 	
 	private UserDAO dao;
 	
@@ -86,6 +89,16 @@ public class UserService {
 	@Transactional
 	public boolean ExistsByID(Integer id) {
 		return dao.existsById(id);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = dao.findByUsername(username);
+		if (user != null) {
+			return user;
+		} else {
+			throw new UsernameNotFoundException("Usuário com o e-mail " + username + " não foi encontrado");
+		}
 	}
 
 }

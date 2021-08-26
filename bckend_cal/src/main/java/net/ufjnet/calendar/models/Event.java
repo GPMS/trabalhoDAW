@@ -48,11 +48,9 @@ public class Event implements Serializable {
 	private LocalDateTime timeEnd;
 
 	@ManyToOne()
-	@JoinColumn(name = "event_user_id", nullable = false, foreignKey = @ForeignKey(name="FK_USER__ROUTE"))
 	private User user;
 	
 	@ManyToOne()
-	@JoinColumn(name = "event_category_id", foreignKey = @ForeignKey(name="FK_CATEGORY__ROUTE"))
 	private Category category;
 	
 	public Event(Integer id, String title, LocalDateTime timeBegin, LocalDateTime timeEnd, User user) {

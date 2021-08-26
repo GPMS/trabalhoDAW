@@ -18,6 +18,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import net.ufjnet.calendar.services.exceptions.BusinessException;
+import net.ufjnet.calendar.services.exceptions.InvalidAuthenticationException;
 
 @ControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler {
@@ -40,6 +41,12 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler(BusinessException.class)
 	public ResponseEntity<StandardError> DataIntegrity(BusinessException ex) {
+		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), ex.getMessage(), null);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(InvalidAuthenticationException.class)
+	public ResponseEntity<StandardError> InvalidAuthenticationException(InvalidAuthenticationException ex) {
 		StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), ex.getMessage(), null);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}

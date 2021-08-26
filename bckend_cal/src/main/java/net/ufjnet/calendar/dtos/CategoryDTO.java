@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.ufjnet.calendar.models.Category;
+import net.ufjnet.calendar.security.UserDTO;
 
 @NoArgsConstructor
 @AllArgsConstructor

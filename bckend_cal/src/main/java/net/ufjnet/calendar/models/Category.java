@@ -44,7 +44,6 @@ public class Category implements Serializable {
 	private String color;
 	
 	@ManyToOne()
-	@JoinColumn(name = "category_user_id", nullable = false, foreignKey = @ForeignKey(name="FK_USER__ROUTE"))
 	private User user;
 	
 	@OneToMany(mappedBy = "category")

@@ -44,8 +44,8 @@ public class CategoryService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<CategoryDTO> FindByUserID(Integer id, Pageable pageable) {
-		return dao.findByUserID(id, pageable).map(obj -> new CategoryDTO(obj));
+	public Page<CategoryDTO> FindByUserEmail(String email, Pageable pageable) {
+		return dao.findByUserEmail(email, pageable).map(obj -> new CategoryDTO(obj));
 	}
 	
 	@Transactional

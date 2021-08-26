@@ -14,6 +14,6 @@ public interface EventDAO extends JpaRepository<Event, Integer> {
 
 	public Optional<Event> findByTitle(String title);
 	
-	@Query("FROM Event e WHERE e.user.id = :findID")
-	public Page<Event> findByUserID(@Param("findID") Integer id, Pageable pageable);
+	@Query("FROM Event e WHERE e.user.email = :email")
+	public Page<Event> findByUserEmail(@Param("email") String email, Pageable pageable);
 }

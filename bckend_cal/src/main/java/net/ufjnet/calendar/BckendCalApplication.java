@@ -10,12 +10,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import net.ufjnet.calendar.models.Category;
 import net.ufjnet.calendar.models.Event;
+import net.ufjnet.calendar.models.Permission;
 import net.ufjnet.calendar.models.User;
 import net.ufjnet.calendar.repositories.CategoryDAO;
 import net.ufjnet.calendar.repositories.EventDAO;
+import net.ufjnet.calendar.repositories.PermissionDAO;
 import net.ufjnet.calendar.repositories.UserDAO;
 
 @EnableAutoConfiguration
@@ -27,10 +30,15 @@ public class BckendCalApplication implements CommandLineRunner {
 	private UserDAO userDAO;
 	
 	@Autowired
+	private PermissionDAO permissionDAO;
+	
+	@Autowired
 	private CategoryDAO categoryDAO;
 	
 	@Autowired
 	private EventDAO eventDAO;
+	
+	private String pass1, pass2;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(BckendCalApplication.class, args);
@@ -38,9 +46,32 @@ public class BckendCalApplication implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		User u1 = new User(1, "Gabriel", "gabriel@cal");
-		User u2 = new User(2, "Gabrieli", "gabrieli@cal");
-		User u3 = new User(3, "Roberto", "roberto@cal");
+		BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
+		pass1 = bCrypt.encode("123");
+		pass2 = bCrypt.encode("456");
+		
+		Permission normal = new Permission();
+		normal.setDescription("NORMAL");
+		
+		User u1 = new User();
+		u1.setName("Gabriel");
+		u1.setEmail("gab.portela@cal");
+		u1.setPassword(pass1);
+		u1.setAccountNonExpired(true);
+		u1.setAccountNonLocked(true);
+		u1.setCredentialsNonExpired(true);
+		u1.setEnabled(true);
+		u1.getPermissions().addAll(Arrays.asList(normal));
+		
+		User u2 = new User();
+		u2.setName("Gabrieli");
+		u2.setEmail("gabrieli@cal");
+		u2.setPassword(pass2);
+		u2.setAccountNonExpired(true);
+		u2.setAccountNonLocked(true);
+		u2.setCredentialsNonExpired(true);
+		u2.setEnabled(true);
+		u2.getPermissions().addAll(Arrays.asList(normal));
 		
 		Category c1 = new Category(1, "Study", "#ff0000", u1);
 		Category c2 = new Category(2, "Workout", "#00ff00", u1);
@@ -50,7 +81,8 @@ public class BckendCalApplication implements CommandLineRunner {
 		Event e2 = new Event(2, "Test2", LocalDateTime.of(2020, Month.DECEMBER, 1,1, 0), LocalDateTime.of(2020, Month.DECEMBER, 1, 23, 59), u1);
 		Event e3 = new Event(3, "Test3", LocalDateTime.of(2020, Month.DECEMBER, 2,1, 0), LocalDateTime.of(2020, Month.DECEMBER, 2, 23, 59), u2);
 		
-		userDAO.saveAll(Arrays.asList(u1, u2, u3));
+		permissionDAO.saveAll(Arrays.asList(normal));
+		userDAO.saveAll(Arrays.asList(u1, u2));
 		categoryDAO.saveAll(Arrays.asList(c1, c2, c3));
 		eventDAO.saveAll(Arrays.asList(e1, e2, e3));
 	}

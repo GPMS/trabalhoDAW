@@ -1,4 +1,4 @@
-package net.ufjnet.calendar.dtos;
+package net.ufjnet.calendar.security;
 
 import java.io.Serializable;
 
@@ -44,9 +44,17 @@ public class UserDTO extends RepresentationModel<UserDTO> implements Serializabl
 	@JsonProperty("user_email")
 	private String email;
 	
+	@NotBlank
+	private String password;
+	
 	public UserDTO(User obj) {
 		this.id = obj.getId();
 		this.name = obj.getName();
 		this.email = obj.getEmail();
+		this.password = obj.getPassword();
+	}
+	
+	public String getUsername() {
+		return email;
 	}
 }

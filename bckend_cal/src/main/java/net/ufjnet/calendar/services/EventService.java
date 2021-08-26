@@ -49,8 +49,8 @@ public class EventService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<EventDTO> FindByUserID(Integer id, Pageable pageable) {
-		return dao.findByUserID(id, pageable).map(obj -> new EventDTO(obj));
+	public Page<EventDTO> FindByUserEmail(String email, Pageable pageable) {
+		return dao.findByUserEmail(email, pageable).map(obj -> new EventDTO(obj));
 	}
 	
 	@Transactional

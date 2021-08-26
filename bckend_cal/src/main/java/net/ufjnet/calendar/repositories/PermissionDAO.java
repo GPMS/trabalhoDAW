@@ -9,12 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import net.ufjnet.calendar.models.Category;
+import net.ufjnet.calendar.models.Permission;
 
-public interface CategoryDAO extends JpaRepository<Category, Integer> {
+public interface PermissionDAO extends JpaRepository<Permission, Integer> {
 
-	public Optional<Category> findByName(String name);
-	
-
-	@Query("FROM Category e WHERE e.user.email = :email")
-	public Page<Category> findByUserEmail(@Param("email") String email, Pageable pageable);
 }
