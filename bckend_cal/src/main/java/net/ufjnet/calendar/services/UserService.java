@@ -56,7 +56,9 @@ public class UserService implements UserDetailsService {
 	public UserDTO Save(UserDTO obj) {
 		User entity = new User(obj.getId(), obj.getName(), obj.getEmail(), bCrypt.encode(obj.getPassword()));
 		
-		boolean emailExists = dao.findByEmail(obj.getEmail()).stream().anyMatch(objResult -> !objResult.equals(obj));
+		boolean emailExists = dao.findByEmail(obj.getEmail())
+								 .stream()
+								 .anyMatch(objResult -> !objResult.getEmail().equals(obj.getEmail()));
 		if (emailExists) {
 			throw new BusinessException("E-mail já existente!");
 		}
@@ -71,7 +73,7 @@ public class UserService implements UserDetailsService {
 		
 		boolean emailExists = dao.findByEmail(obj.getEmail())
 				.stream()
-				.anyMatch(objResult -> !objResult.equals(obj));
+				.anyMatch(objResult -> !objResult.getEmail().equals(obj.getEmail()));
 		if (emailExists) {
 			throw new BusinessException("E-mail já existente!");
 		}

@@ -58,7 +58,7 @@ public class CategoryService {
 		
 		boolean nameExists = dao.findByName(obj.getName())
 				.stream()
-				.anyMatch(objResult -> !objResult.equals(obj));
+				.anyMatch(objResult -> !objResult.getName().equals(obj.getName()));
 		
 		if (nameExists) {
 			throw new BusinessException("Nome já existente!");
@@ -75,7 +75,7 @@ public class CategoryService {
 		
 		boolean nameExists = dao.findByName(obj.getName())
 				.stream()
-				.anyMatch(objResult -> !objResult.equals(obj));
+				.anyMatch(objResult -> !objResult.getName().equals(obj.getName()));
 		if (nameExists) {
 			throw new BusinessException("Nome já existente!");
 		}
