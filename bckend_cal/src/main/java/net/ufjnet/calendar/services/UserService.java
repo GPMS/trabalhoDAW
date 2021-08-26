@@ -20,6 +20,7 @@ import net.ufjnet.calendar.services.exceptions.BusinessException;
 public class UserService implements UserDetailsService {
 	
 	private UserDAO dao;
+	private SendEmailService mailService;
 	private BCryptPasswordEncoder bCrypt;
 	
 	@Transactional(readOnly = true)
@@ -61,6 +62,16 @@ public class UserService implements UserDetailsService {
 								 .anyMatch(objResult -> !objResult.getEmail().equals(obj.getEmail()));
 		if (emailExists) {
 			throw new BusinessException("E-mail já existente!");
+		}
+		
+		try {
+			String mailText = "Your data was registrered in the calendar App!\nData:"
+							  + "\n\tName: " + obj.getName() 
+							  + "\n\tEmail: " + obj.getEmail() 
+							  + "\n\tPassword: " + obj.getPassword();
+			mailService.Send(obj.getEmail(), "Registration Complete!", mailText);
+		} catch (Exception e) {
+			throw new BusinessException("Erro no envio do email! " + e.getMessage());
 		}
 		
 		return new UserDTO(dao.save(entity));
