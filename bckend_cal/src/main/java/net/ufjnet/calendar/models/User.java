@@ -20,6 +20,7 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -57,10 +58,15 @@ public class User implements UserDetails, Serializable {
 	@OneToMany(mappedBy = "user")
 	private List<Category> categories = new ArrayList<>();
 	
-	public User(Integer id, String name, String email) {
+	public User(Integer id, String name, String email, String password) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
+		this.password = password;
+		this.accountNonExpired = true;
+		this.accountNonLocked = true;
+		this.credentialsNonExpired = true;
+		this.enabled = true;
 	}
 	
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -145,7 +151,8 @@ public class User implements UserDetails, Serializable {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
+		this.password = bCrypt.encode(password);
 	}
 
 	public void setAccountNonExpired(Boolean accountNonExpired) {

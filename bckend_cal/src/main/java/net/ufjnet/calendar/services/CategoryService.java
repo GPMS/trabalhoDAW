@@ -51,7 +51,7 @@ public class CategoryService {
 	@Transactional
 	public CategoryDTO Save(CategoryDTO obj) {
 		Category entity = new Category(obj.getId(), obj.getName(), obj.getColor(), 
-				new User(obj.getUser().getId(), obj.getUser().getName(), obj.getUser().getEmail()));
+				new User(obj.getUser().getId(), obj.getUser().getName(), obj.getUser().getEmail(), obj.getUser().getPassword()));
 		
 		Optional<User> user = userDAO.findById(obj.getUser().getId());
 		entity.setUser(user.orElse(null));

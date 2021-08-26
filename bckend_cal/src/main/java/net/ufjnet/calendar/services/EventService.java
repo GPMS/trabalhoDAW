@@ -58,7 +58,7 @@ public class EventService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 		Event entity = new Event(obj.getId(), obj.getTitle(), obj.getDescription(), 
 								 LocalDateTime.parse(obj.getTimeBegin(), formatter), LocalDateTime.parse(obj.getTimeEnd(), formatter),
-								 new User(obj.getUser().getId(), obj.getUser().getName(), obj.getUser().getEmail()));
+								 new User(obj.getUser().getId(), obj.getUser().getName(), obj.getUser().getEmail(), obj.getUser().getPassword()));
 		
 		Optional<User> user = userDAO.findById(obj.getUser().getId());
 		entity.setUser(user.orElse(null));

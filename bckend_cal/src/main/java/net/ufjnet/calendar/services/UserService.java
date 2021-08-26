@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import net.ufjnet.calendar.services.exceptions.BusinessException;
 public class UserService implements UserDetailsService {
 	
 	private UserDAO dao;
+	private BCryptPasswordEncoder bCrypt;
 	
 	@Transactional(readOnly = true)
 	public Page<UserDTO> FindAll(Pageable pageable) {
@@ -52,7 +54,7 @@ public class UserService implements UserDetailsService {
 	
 	@Transactional
 	public UserDTO Save(UserDTO obj) {
-		User entity = new User(obj.getId(), obj.getName(), obj.getEmail());
+		User entity = new User(obj.getId(), obj.getName(), obj.getEmail(), bCrypt.encode(obj.getPassword()));
 		
 		boolean emailExists = dao.findByEmail(obj.getEmail()).stream().anyMatch(objResult -> !objResult.equals(obj));
 		if (emailExists) {
@@ -77,6 +79,7 @@ public class UserService implements UserDetailsService {
 		entity.setId(obj.getId());
 		entity.setName(obj.getName());
 		entity.setEmail(obj.getEmail());
+		entity.setPassword(bCrypt.encode(obj.getPassword()));
 		
 		return new UserDTO(dao.save(entity));
 	}

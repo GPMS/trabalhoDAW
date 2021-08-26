@@ -38,7 +38,7 @@ public class BckendCalApplication implements CommandLineRunner {
 	@Autowired
 	private EventDAO eventDAO;
 	
-	private String pass1, pass2;
+	private BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
 	
 	public static void main(String[] args) {
 		SpringApplication.run(BckendCalApplication.class, args);
@@ -46,17 +46,13 @@ public class BckendCalApplication implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
-		pass1 = bCrypt.encode("123");
-		pass2 = bCrypt.encode("456");
-		
 		Permission normal = new Permission();
 		normal.setDescription("NORMAL");
 		
 		User u1 = new User();
 		u1.setName("Gabriel");
-		u1.setEmail("gab.portela@cal");
-		u1.setPassword(pass1);
+		u1.setEmail("gab.portela@hotmail.com");
+		u1.setPassword(bCrypt.encode("123"));
 		u1.setAccountNonExpired(true);
 		u1.setAccountNonLocked(true);
 		u1.setCredentialsNonExpired(true);
@@ -66,7 +62,7 @@ public class BckendCalApplication implements CommandLineRunner {
 		User u2 = new User();
 		u2.setName("Gabrieli");
 		u2.setEmail("gabrieli@cal");
-		u2.setPassword(pass2);
+		u2.setPassword(bCrypt.encode("456"));
 		u2.setAccountNonExpired(true);
 		u2.setAccountNonLocked(true);
 		u2.setCredentialsNonExpired(true);
